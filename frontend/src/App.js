@@ -1,31 +1,24 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Layout from './components/Layout';
+import Home from './components/Home';
+import Post from './components/Post';
+import Tags from './components/Tags';
+import Tag from './components/Tag';
 import './App.css';
-import React, { useEffect, useState } from 'react';
-import axios from 'axios'
 
 function App() {
-  const [getMessage, setGetMessage] = useState({})
-
-  useEffect(()=>{
-    axios.get('http://localhost:5000/flask/hello').then(response => {
-      console.log("SUCCESS", response)
-      setGetMessage(response)
-    }).catch(error => {
-      console.log(error)
-    })
-
-  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>React + Flask Tutorial</p>
-        <div>{getMessage.status === 200 ?
-          <h3>{getMessage.data.message}</h3>
-          :
-          <h3>LOADING</h3>}</div>
-      </header>
-    </div>
+    <Router>
+      <Layout>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/tags" component={Tags} />
+          <Route path="/tag/:tag_name" component={Tag} />
+          <Route path="/post/:id" component={Post} />
+        </Switch>
+      </Layout>
+    </Router>
   );
 }
 
